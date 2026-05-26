@@ -1,380 +1,453 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>100 Mexicanos Dijeron</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>100 Mexicanos Dijeron</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #1e3a8a, #000);
-  color: white;
-  overflow-x: hidden;
-}
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: radial-gradient(circle at top, #1e3a8a, #000);
+        color: white;
+        overflow-x: hidden;
+      }
 
-header {
-  text-align: center;
-  padding: 20px;
-}
+      header {
+        text-align: center;
+        padding: 20px;
+      }
 
-h1 {
-  font-size: 40px;
-  color: gold;
-  text-shadow: 0 0 20px gold;
-  margin: 0;
-}
+      h1 {
+        font-size: 40px;
+        color: gold;
+        text-shadow: 0 0 20px gold;
+        margin: 0;
+      }
 
-.container {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  gap: 20px;
-  padding: 20px;
-}
+      .container {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        gap: 20px;
+        padding: 20px;
+      }
 
-.panel {
-  background: rgba(0,0,0,0.4);
-  padding: 15px;
-  border-radius: 15px;
-}
+      .panel {
+        background: rgba(0, 0, 0, 0.4);
+        padding: 15px;
+        border-radius: 15px;
+      }
 
-.score {
-  font-size: 40px;
-  text-align: center;
-  color: gold;
-}
+      .score {
+        font-size: 40px;
+        text-align: center;
+        color: gold;
+      }
 
-.turnoBox {
-  margin: 15px 0;
-  padding: 10px;
-  background: rgba(255, 215, 0, 0.15);
-  border: 2px solid gold;
-  border-radius: 10px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 18px;
-  color: gold;
-}
+      .turnoBox {
+        margin: 15px 0;
+        padding: 10px;
+        background: rgba(255, 215, 0, 0.15);
+        border: 2px solid gold;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+        color: gold;
+      }
 
-.question {
-  background: linear-gradient(90deg, gold, orange);
-  color: black;
-  padding: 20px;
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  border-radius: 15px;
-}
+      .question {
+        background: linear-gradient(90deg, gold, orange);
+        color: black;
+        padding: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        border-radius: 15px;
+      }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  margin-top: 20px;
-}
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+      }
 
-.card {
-  background: #1e40af;
-  height: 120px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 40px;
-  font-weight: bold;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: transform .3s;
-  position: relative;
-}
+      .card {
+        background: #1e40af;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 40px;
+        font-weight: bold;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: transform 0.3s;
+        position: relative;
+      }
 
-.card:hover {
-  transform: scale(1.05);
-}
+      .card:hover {
+        transform: scale(1.05);
+      }
 
-.card.revealed {
-  background: gold;
-  color: black;
-  font-size: 18px;
-  flex-direction: column;
-}
+      .card.revealed {
+        background: gold;
+        color: black;
+        font-size: 18px;
+        flex-direction: column;
+      }
 
-.controls {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
+      .controls {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
 
-button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-}
+      button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+      }
 
-.green { background: green; color: white; }
-.red { background: red; color: white; }
-.blue { background: #2563eb; color: white; }
-.orange { background: orange; }
+      .green {
+        background: green;
+        color: white;
+      }
+      .red {
+        background: red;
+        color: white;
+      }
+      .blue {
+        background: #2563eb;
+        color: white;
+      }
+      .orange {
+        background: orange;
+      }
 
-.errors {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
-}
+      .errors {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
 
-.x {
-  font-size: 30px;
-  color: red;
-}
+      .x {
+        font-size: 30px;
+        color: red;
+      }
 
-.intro {
-  position: fixed;
-  inset: 0;
-  background: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 10;
-}
+      .intro {
+        position: fixed;
+        inset: 0;
+        background: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 10;
+      }
 
-.intro h1 {
-  font-size: 60px;
-}
-</style>
-</head>
+      .intro h1 {
+        font-size: 60px;
+      }
+    </style>
+  </head>
 
-<body>
-
-<div class="intro" id="intro">
-  <h1>100 MEXICANOS DIJERON</h1>
-  <p>Cargando juego...</p>
-</div>
-
-<header>
-  <h1>100 Mexicanos Dijeron</h1>
-</header>
-
-<div class="container">
-
-  <div class="panel">
-    <h2>Equipo 1</h2>
-    <div class="score" id="score1">0</div>
-
-    <h2>Equipo 2</h2>
-    <div class="score" id="score2">0</div>
-
-    <div class="turnoBox" id="turnoBox">
-      🔥 Turno actual: Equipo 1
+  <body>
+    <div class="intro" id="intro">
+      <h1>100 MEXICANOS DIJERON</h1>
+      <p>Cargando juego...</p>
     </div>
 
-    <hr>
+    <header>
+      <h1>100 Mexicanos Dijeron</h1>
+    </header>
 
-    <h3>Errores</h3>
-    <div class="errors" id="errors">
-      <div class="x">❌</div>
-      <div class="x">❌</div>
-      <div class="x">❌</div>
+    <div class="container">
+      <div class="panel">
+        <h2>Equipo 1</h2>
+        <div class="score" id="score1">0</div>
+
+        <h2>Equipo 2</h2>
+        <div class="score" id="score2">0</div>
+
+        <div class="turnoBox" id="turnoBox">🔥 Turno actual: Equipo 1</div>
+
+        <hr />
+
+        <h3>Errores</h3>
+        <div class="errors" id="errors">
+          <div class="x">❌</div>
+          <div class="x">❌</div>
+          <div class="x">❌</div>
+        </div>
+
+        <button class="red" onclick="addError()">Error</button>
+        <button class="blue" onclick="resetErrors()">Reiniciar errores</button>
+      </div>
+
+      <div>
+        <div class="question" id="question">
+          Menciona algo que haces al despertar
+        </div>
+
+        <div class="grid" id="grid"></div>
+
+        <div class="controls">
+          <button class="green" onclick="sumPoints()">Sumar puntos</button>
+          <button class="blue" onclick="switchTeam()">Cambiar turno</button>
+          <button class="orange" onclick="nextQuestion()">
+            Siguiente pregunta
+          </button>
+          <button class="red" onclick="resetGame()">Reiniciar</button>
+        </div>
+      </div>
     </div>
 
-    <button class="red" onclick="addError()">Error</button>
-    <button class="blue" onclick="resetErrors()">Reiniciar errores</button>
-  </div>
+    <script>
+      let questions = [];
 
-  <div>
+      async function init() {
+        try {
+          questions = await cargarDesdeCSV();
 
-    <div class="question" id="question">
-      Menciona algo que haces al despertar
-    </div>
+          if (!questions || questions.length === 0) {
+            alert("No se cargaron preguntas del CSV");
+            return;
+          }
 
-    <div class="grid" id="grid"></div>
+          loadQuestion();
+          updateScores();
+          updateErrors();
+          updateTurno();
+        } catch (e) {
+          console.error(e);
+          alert("Error cargando preguntas");
+        }
+      }
 
-    <div class="controls">
-      <button class="green" onclick="sumPoints()">Sumar puntos</button>
-      <button class="blue" onclick="switchTeam()">Cambiar turno</button>
-      <button class="orange" onclick="nextQuestion()">Siguiente pregunta</button>
-      <button class="red" onclick="resetGame()">Reiniciar</button>
-    </div>
+      let juegoIniciado = false;
 
-  </div>
-</div>
+      document
+        .getElementById("intro")
+        .addEventListener("click", async function iniciarJuego() {
+          if (juegoIniciado) return;
+          juegoIniciado = true;
 
-<script>
-let questions = [];
+          sonidos.jugar.currentTime = 0;
+          sonidos.jugar.play().catch(() => {});
 
-async function init() {
-  questions = await cargarDesdeCSV();
-  loadQuestion();
-}
+          try {
+            questions = await cargarDesdeCSV();
 
-init();
+            if (!questions || questions.length === 0) {
+              alert("No se cargaron preguntas del CSV");
+              return;
+            }
 
-let qIndex = 0;
-let revealed = [];
-let score1 = 0;
-let score2 = 0;
-let team = 1;
-let errors = 0;
+            qIndex = 0;
+            loadQuestion();
+            updateScores();
+            updateErrors();
+            updateTurno();
 
-function beep(freq){
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const o = ctx.createOscillator();
-  const g = ctx.createGain();
-  o.connect(g);
-  g.connect(ctx.destination);
-  o.frequency.value = freq;
-  o.start();
-  g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2);
-  o.stop(ctx.currentTime + 0.2);
-}
+            document.getElementById("intro").style.display = "none";
+          } catch (e) {
+            console.error(e);
+            alert("Error cargando preguntas");
+          }
+        });
 
-function updateTurno(){
-  document.getElementById("turnoBox").innerText = "🔥 Turno actual: Equipo " + team;
-}
+      let qIndex = 0;
+      let revealed = [];
+      let score1 = 0;
+      let score2 = 0;
+      let team = 1;
+      let errors = 0;
 
-function renderQuestionNumber() {
-  const q = questions[qIndex];
-  const numero = qIndex + 1;
+      const sonidos = {
+        correcto: new Audio("sonidos/correcto-100-mexicanos-dijeron.mp3"),
+        incorrecto: new Audio("sonidos/incorrecto-100-mexicanos-dijeron.mp3"),
+        ganador: new Audio("sonidos/ganador-100.mp3"),
+        jugar: new Audio("sonidos/a-jugar-100-mexicanos-dijeron.mp3"),
+      };
 
-  document.getElementById("question").innerHTML =
-    `<b>Pregunta ${numero}:</b> ${q.q}`;
-}
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-function loadQuestion(){
-  const q = questions[qIndex];
+      function beep(freq) {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
 
-  renderQuestionNumber(); // 👈 AQUI EL CAMBIO
+        o.connect(g);
+        g.connect(ctx.destination);
 
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-  revealed = [];
+        o.frequency.value = freq;
+        o.start();
 
-  q.a.forEach((item, i)=>{
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerText = i + 1;
+        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2);
+        o.stop(ctx.currentTime + 0.2);
+      }
+      function updateTurno() {
+        document.getElementById("turnoBox").innerText =
+          "🔥 Turno actual: Equipo " + team;
+      }
 
-    div.onclick = ()=> reveal(i, div);
+      function renderQuestionNumber() {
+        const q = questions[qIndex];
+        const numero = qIndex + 1;
 
-    grid.appendChild(div);
-  });
-}
-function reveal(i, div){
-  if(revealed.includes(i)) return;
+        document.getElementById("question").innerHTML =
+          `<b>Pregunta ${numero}:</b> ${q.q}`;
+      }
 
-  const q = questions[qIndex];
-  const [text, pts] = q.a[i];
+      function loadQuestion() {
+        const q = questions[qIndex];
 
-  div.classList.add("revealed");
-  div.innerHTML = `<b>${text}</b><br>${pts} pts`;
+        renderQuestionNumber(); // 👈 AQUI EL CAMBIO
 
-  revealed.push(i);
-  beep(600);
-}
+        const grid = document.getElementById("grid");
+        grid.innerHTML = "";
+        revealed = [];
 
-function sumPoints(){
-  const q = questions[qIndex];
-  let total = 0;
+        q.a.forEach((item, i) => {
+          const div = document.createElement("div");
+          div.className = "card";
+          div.innerText = i + 1;
 
-  revealed.forEach(i=>{
-    total += q.a[i][1];
-  });
+          div.onclick = () => reveal(i, div);
 
-  if(team === 1) score1 += total;
-  else score2 += total;
+          grid.appendChild(div);
+        });
+      }
+      function switchTeam() {
+        team = team === 1 ? 2 : 1;
+        updateTurno();
+        beep(300);
+      }
 
-  updateScores();
-  beep(900);
-}
+      function addError() {
+        if (errors >= 3) return;
 
-function switchTeam(){
-  team = team === 1 ? 2 : 1;
-  updateTurno();
-  beep(300);
-}
+        errors++;
+        updateErrors();
 
-function addError(){
-  if(errors >= 3) return;
-  errors++;
-  updateErrors();
-  beep(150);
-}
+        sonidos.incorrecto.currentTime = 1.4;
+        sonidos.incorrecto.play().catch(() => {});
+      }
 
-function resetErrors(){
-  errors = 0;
-  updateErrors();
-  beep(400);
-}
+      function resetErrors() {
+        errors = 0;
+        updateErrors();
+        beep(400);
+      }
 
-function nextQuestion(){
-  qIndex = (qIndex + 1) % questions.length;
-  errors = 0;
-  updateErrors();
-  loadQuestion();
-}
+      function nextQuestion() {
+        qIndex = (qIndex + 1) % questions.length;
+        errors = 0;
+        updateErrors();
+        loadQuestion();
 
-function resetGame(){
-  score1 = 0;
-  score2 = 0;
-  errors = 0;
-  qIndex = 0;
-  team = 1;
-  updateScores();
-  updateErrors();
-  updateTurno();
-  loadQuestion();
-}
+        sonidos.jugar.currentTime = 0;
+        sonidos.jugar.play().catch(() => {});
+      }
 
-function updateScores(){
-  document.getElementById("score1").innerText = score1;
-  document.getElementById("score2").innerText = score2;
-}
+      function resetGame() {
+        score1 = 0;
+        score2 = 0;
+        errors = 0;
+        qIndex = 0;
+        team = 1;
+        updateScores();
+        updateErrors();
+        updateTurno();
+        loadQuestion();
+      }
 
-function updateErrors(){
-  document.querySelectorAll(".x").forEach((x,i)=>{
-    x.style.opacity = i < errors ? 1 : 0.2;
-  });
-}
+      function updateScores() {
+        document.getElementById("score1").innerText = score1;
+        document.getElementById("score2").innerText = score2;
+      }
 
-setTimeout(()=>{
-  document.getElementById("intro").style.display = "none";
-}, 2000);
+      function updateErrors() {
+        document.querySelectorAll(".x").forEach((x, i) => {
+          x.style.opacity = i < errors ? 1 : 0.2;
+        });
+      }
 
-loadQuestion();
-updateScores();
-updateErrors();
-updateTurno();
+      document.addEventListener("click", function startAudio() {
+        sonidos.jugar.currentTime = 0;
+        sonidos.jugar.play().catch(() => {});
+        document.removeEventListener("click", startAudio);
+      });
 
-async function cargarDesdeCSV() {
-  const res = await fetch("data/preguntas.csv");
-  const text = await res.text();
+      loadQuestion();
+      updateScores();
+      updateErrors();
+      updateTurno();
 
-  const rows = text.split("\n").slice(1);
+      async function cargarDesdeCSV() {
+        const res = await fetch("data/preguntas.csv");
+        const text = await res.text();
 
-  const preguntas = rows.map(row => {
-    const cols = row.split(",");
+        const rows = text.split("\n").slice(1);
 
-    return {
-      q: cols[0],
-      a: [
-        [cols[1], Number(cols[2])],
-        [cols[3], Number(cols[4])],
-        [cols[5], Number(cols[6])]
-      ]
-    };
-  });
+        const preguntas = rows.map((row) => {
+          const cols = row.split(",");
 
-  return preguntas;
-}
-</script>
+          return {
+            q: cols[0],
+            a: [
+              [cols[1], Number(cols[2])],
+              [cols[3], Number(cols[4])],
+              [cols[5], Number(cols[6])],
+            ],
+          };
+        });
 
-</body>
+        return preguntas;
+      }
 
+      function reveal(i, div) {
+        if (revealed.includes(i)) return;
+
+        const q = questions[qIndex];
+        const [text, pts] = q.a[i];
+
+        div.classList.add("revealed");
+        div.innerHTML = `<b>${text}</b><br>${pts} pts`;
+
+        revealed.push(i);
+
+        sonidos.correcto.currentTime = 0;
+        sonidos.correcto.play().catch(() => {});
+      }
+
+      function sumPoints() {
+        const q = questions[qIndex];
+        let total = 0;
+
+        revealed.forEach((i) => {
+          total += q.a[i][1];
+        });
+
+        if (total === 0) return; // 👈 evita sonido innecesario
+
+        if (team === 1) score1 += total;
+        else score2 += total;
+
+        updateScores();
+
+        sonidos.ganador.currentTime = 0;
+        sonidos.ganador.play().catch(() => {});
+      }
+
+      updateTurno();
+    </script>
+  </body>
 </html>
-
-
-
