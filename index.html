@@ -254,61 +254,39 @@
 
     <div class="container">
       <div class="panel">
+        <h2>
+          <input
+            type="text"
+            id="team1Name"
+            value="Equipo 1"
+            class="teamInput"
+            oninput="updateTeamNames()"
+          />
+        </h2>
 
-  <h2>
-    <input
-      type="text"
-      id="team1Name"
-      value="Equipo 1"
-      class="teamInput"
-      oninput="updateTeamNames()"
-    />
-  </h2>
+        <div class="score" id="score1">0</div>
 
-  <div class="score" id="score1">0</div>
+        <h2 style="margin-top: 20px">
+          <input
+            type="text"
+            id="team2Name"
+            value="Equipo 2"
+            class="teamInput"
+            oninput="updateTeamNames()"
+          />
+        </h2>
 
-  <h2 style="margin-top: 20px;">
-    <input
-      type="text"
-      id="team2Name"
-      value="Equipo 2"
-      class="teamInput"
-      oninput="updateTeamNames()"
-    />
-  </h2>
+        <div class="score" id="score2">0</div>
 
-  <div class="score" id="score2">0</div>
+        <div class="turnoBox" id="turnoBox">🔥 Turno actual: Equipo 1</div>
 
-  <div class="turnoBox" id="turnoBox">
-    🔥 Turno actual: Equipo 1
-  </div>
-
-  <hr />
+        <hr />
 
         <h3>Errores</h3>
         <div class="errors" id="errors">
           <div class="x">❌</div>
           <div class="x">❌</div>
           <div class="x">❌</div>
-        </div>
-        <div
-          id="stealAlert"
-          style="
-            display: none;
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(255, 0, 0, 0.2);
-            border: 3px solid red;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff4d4d;
-            animation: parpadeo 0.8s infinite;
-          "
-        >
-          ⚠️ TIMBACK ⚠️<br />
-          ¡El otro equipo puede robar los puntos!
         </div>
 
         <button class="red" onclick="addError()">Error</button>
@@ -331,6 +309,26 @@
             Siguiente pregunta
           </button>
           <button class="red" onclick="resetGame()">Reiniciar juego</button>
+          <div
+            id="stealAlert"
+            style="
+              display: none;
+               flex-basis: 100%;
+              margin-top: 15px;
+              padding: 15px;
+              background: rgba(255, 0, 0, 0.2);
+              border: 3px solid red;
+              border-radius: 12px;
+              text-align: center;
+              font-size: 24px;
+              font-weight: bold;
+              color: #ff4d4d;
+              animation: parpadeo 0.8s infinite;
+            "
+          >
+            ⚠️ TIMBACK ⚠️<br />
+            ¡El otro equipo puede robar los puntos si hay otro error!
+          </div>
         </div>
       </div>
     </div>
@@ -401,7 +399,6 @@
       let team1Name = "Equipo 1";
       let team2Name = "Equipo 2";
 
-      
       const sonidos = {
         correcto: new Audio("sonidos/correcto-100-mexicanos-dijeron.mp3"),
         incorrecto: new Audio("sonidos/incorrecto-100-mexicanos-dijeron.mp3"),
@@ -426,11 +423,11 @@
       }
 
       function updateTeamNames() {
-  team1Name = document.getElementById("team1Name").value || "Equipo 1";
-  team2Name = document.getElementById("team2Name").value || "Equipo 2";
+        team1Name = document.getElementById("team1Name").value || "Equipo 1";
+        team2Name = document.getElementById("team2Name").value || "Equipo 2";
 
-  updateTurno();
-}
+        updateTurno();
+      }
 
       function showBigError() {
         const bigError = document.getElementById("bigError");
@@ -461,11 +458,11 @@
       }
 
       function updateTurno() {
-  const currentTeamName = team === 1 ? team1Name : team2Name;
+        const currentTeamName = team === 1 ? team1Name : team2Name;
 
-  document.getElementById("turnoBox").innerText =
-    "🔥 Turno actual: " + currentTeamName;
-}
+        document.getElementById("turnoBox").innerText =
+          "🔥 Turno actual: " + currentTeamName;
+      }
 
       function renderQuestionNumber() {
         const q = questions[qIndex];
@@ -608,25 +605,25 @@
         sonidos.jugar.play().catch(() => {});
       }
 
-     function showWinner() {
-  let winnerText = "";
+      function showWinner() {
+        let winnerText = "";
 
-  if (score1 > score2)
-    winnerText = "🔥 GANA " + team1Name.toUpperCase() + " 🔥";
-  else if (score2 > score1)
-    winnerText = "🔥 GANA " + team2Name.toUpperCase() + " 🔥";
-  else winnerText = "⚖️ EMPATE ⚖️";
+        if (score1 > score2)
+          winnerText = "🔥 GANA " + team1Name.toUpperCase() + " 🔥";
+        else if (score2 > score1)
+          winnerText = "🔥 GANA " + team2Name.toUpperCase() + " 🔥";
+        else winnerText = "⚖️ EMPATE ⚖️";
 
-  document.getElementById("winnerText").innerText = winnerText;
+        document.getElementById("winnerText").innerText = winnerText;
 
-  document.getElementById("finalScore").innerText =
-    `${team1Name}: ${score1} pts | ${team2Name}: ${score2} pts`;
+        document.getElementById("finalScore").innerText =
+          `${team1Name}: ${score1} pts | ${team2Name}: ${score2} pts`;
 
-  document.getElementById("winner").style.display = "flex";
+        document.getElementById("winner").style.display = "flex";
 
-  sonidos.ganador.currentTime = 0;
-  sonidos.ganador.play().catch(() => {});
-}
+        sonidos.ganador.currentTime = 0;
+        sonidos.ganador.play().catch(() => {});
+      }
       function resetGame() {
         score1 = 0;
         score2 = 0;
