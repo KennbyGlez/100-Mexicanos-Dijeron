@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>100 Mexicanos Dijeron</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, #1e3a8a, #000);
+  color: white;
+  overflow-x: hidden;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 40px;
+  color: gold;
+  text-shadow: 0 0 20px gold;
+  margin: 0;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.panel {
+  background: rgba(0,0,0,0.4);
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.score {
+  font-size: 40px;
+  text-align: center;
+  color: gold;
+}
+
+.turnoBox {
+  margin: 15px 0;
+  padding: 10px;
+  background: rgba(255, 215, 0, 0.15);
+  border: 2px solid gold;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  color: gold;
+}
+
+.question {
+  background: linear-gradient(90deg, gold, orange);
+  color: black;
+  padding: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 15px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.card {
+  background: #1e40af;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  font-weight: bold;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: transform .3s;
+  position: relative;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card.revealed {
+  background: gold;
+  color: black;
+  font-size: 18px;
+  flex-direction: column;
+}
+
+.controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.green { background: green; color: white; }
+.red { background: red; color: white; }
+.blue { background: #2563eb; color: white; }
+.orange { background: orange; }
+
+.errors {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.x {
+  font-size: 30px;
+  color: red;
+}
+
+.intro {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.intro h1 {
+  font-size: 60px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="intro" id="intro">
+  <h1>100 MEXICANOS DIJERON</h1>
+  <p>Cargando juego...</p>
+</div>
+
+<header>
+  <h1>100 Mexicanos Dijeron</h1>
+</header>
+
+<div class="container">
+
+  <div class="panel">
+    <h2>Equipo 1</h2>
+    <div class="score" id="score1">0</div>
+
+    <h2>Equipo 2</h2>
+    <div class="score" id="score2">0</div>
+
+    <div class="turnoBox" id="turnoBox">
+      🔥 Turno actual: Equipo 1
+    </div>
+
+    <hr>
+
+    <h3>Errores</h3>
+    <div class="errors" id="errors">
+      <div class="x">❌</div>
+      <div class="x">❌</div>
+      <div class="x">❌</div>
+    </div>
+
+    <button class="red" onclick="addError()">Error</button>
+    <button class="blue" onclick="resetErrors()">Reiniciar errores</button>
+  </div>
+
+  <div>
+
+    <div class="question" id="question">
+      Menciona algo que haces al despertar
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="controls">
+      <button class="green" onclick="sumPoints()">Sumar puntos</button>
+      <button class="blue" onclick="switchTeam()">Cambiar turno</button>
+      <button class="orange" onclick="nextQuestion()">Siguiente pregunta</button>
+      <button class="red" onclick="resetGame()">Reiniciar</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let questions = [];
+
+async function init() {
+  questions = await cargarDesdeCSV();
+  loadQuestion();
+}
+
+init();
+
+let qIndex = 0;
+let revealed = [];
+let score1 = 0;
+let score2 = 0;
+let team = 1;
+let errors = 0;
+
+function beep(freq){
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.connect(g);
+  g.connect(ctx.destination);
+  o.frequency.value = freq;
+  o.start();
+  g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2);
+  o.stop(ctx.currentTime + 0.2);
+}
+
+function updateTurno(){
+  document.getElementById("turnoBox").innerText = "🔥 Turno actual: Equipo " + team;
+}
+
+function renderQuestionNumber() {
+  const q = questions[qIndex];
+  const numero = qIndex + 1;
+
+  document.getElementById("question").innerHTML =
+    `<b>Pregunta ${numero}:</b> ${q.q}`;
+}
+
+function loadQuestion(){
+  const q = questions[qIndex];
+
+  renderQuestionNumber(); // 👈 AQUI EL CAMBIO
+
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  revealed = [];
+
+  q.a.forEach((item, i)=>{
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerText = i + 1;
+
+    div.onclick = ()=> reveal(i, div);
+
+    grid.appendChild(div);
+  });
+}
+function reveal(i, div){
+  if(revealed.includes(i)) return;
+
+  const q = questions[qIndex];
+  const [text, pts] = q.a[i];
+
+  div.classList.add("revealed");
+  div.innerHTML = `<b>${text}</b><br>${pts} pts`;
+
+  revealed.push(i);
+  beep(600);
+}
+
+function sumPoints(){
+  const q = questions[qIndex];
+  let total = 0;
+
+  revealed.forEach(i=>{
+    total += q.a[i][1];
+  });
+
+  if(team === 1) score1 += total;
+  else score2 += total;
+
+  updateScores();
+  beep(900);
+}
+
+function switchTeam(){
+  team = team === 1 ? 2 : 1;
+  updateTurno();
+  beep(300);
+}
+
+function addError(){
+  if(errors >= 3) return;
+  errors++;
+  updateErrors();
+  beep(150);
+}
+
+function resetErrors(){
+  errors = 0;
+  updateErrors();
+  beep(400);
+}
+
+function nextQuestion(){
+  qIndex = (qIndex + 1) % questions.length;
+  errors = 0;
+  updateErrors();
+  loadQuestion();
+}
+
+function resetGame(){
+  score1 = 0;
+  score2 = 0;
+  errors = 0;
+  qIndex = 0;
+  team = 1;
+  updateScores();
+  updateErrors();
+  updateTurno();
+  loadQuestion();
+}
+
+function updateScores(){
+  document.getElementById("score1").innerText = score1;
+  document.getElementById("score2").innerText = score2;
+}
+
+function updateErrors(){
+  document.querySelectorAll(".x").forEach((x,i)=>{
+    x.style.opacity = i < errors ? 1 : 0.2;
+  });
+}
+
+setTimeout(()=>{
+  document.getElementById("intro").style.display = "none";
+}, 2000);
+
+loadQuestion();
+updateScores();
+updateErrors();
+updateTurno();
+
+async function cargarDesdeCSV() {
+  const res = await fetch("data/preguntas.csv");
+  const text = await res.text();
+
+  const rows = text.split("\n").slice(1);
+
+  const preguntas = rows.map(row => {
+    const cols = row.split(",");
+
+    return {
+      q: cols[0],
+      a: [
+        [cols[1], Number(cols[2])],
+        [cols[3], Number(cols[4])],
+        [cols[5], Number(cols[6])]
+      ]
+    };
+  });
+
+  return preguntas;
+}
+</script>
+
+</body>
+
+</html>
+
+
+
