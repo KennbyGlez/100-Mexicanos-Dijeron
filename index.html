@@ -313,7 +313,7 @@
             id="stealAlert"
             style="
               display: none;
-               flex-basis: 100%;
+              flex-basis: 100%;
               margin-top: 15px;
               padding: 15px;
               background: rgba(255, 0, 0, 0.2);
@@ -511,6 +511,11 @@
         if (stealing) {
           let total = 0;
           const q = questions[qIndex];
+          errors = 1;
+
+          // 👇 MOSTRAR X GIGANTE
+          updateErrors();
+          showBigError();
 
           revealed.forEach((i) => {
             total += q.a[i][1];
