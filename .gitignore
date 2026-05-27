@@ -1,0 +1,15 @@
+# Dependencias
+node_modules/
+
+# Build de Electron
+dist/
+
+# Archivos temporales
+*.log
+
+# Ejecutables
+*.exe
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
